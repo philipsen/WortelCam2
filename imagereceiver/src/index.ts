@@ -1,4 +1,4 @@
-import { logger } from "./util/logger";
+import logger from "./util/logger";
 
 const serverclass = require("./server");
 const debug = require("debug")("express:server");
