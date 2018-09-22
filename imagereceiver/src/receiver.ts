@@ -15,7 +15,17 @@ export class Receiver {
         const latestimage = path.join(`${IMAGE_DROP_LOCATION}`, 'latest.jpeg');
         const imageLocation = path.normalize(`${IMAGE_DROP_LOCATION}`);
         logger.debug(`path = ${imageLocation}`);
+        let previousFilename = '';
         fs.watch(imageLocation, { encoding: 'buffer' }, (eventType, filename) => {
+            if (filename.toLocaleString() == previousFilename) {
+                return;
+            } else {
+                previousFilename = filename.toString();
+            }
+            const mat = filename.toString().match('.*\.jpg$');
+            if (mat == undefined) {
+                return;
+            }
             logger.debug(`change detected type=${eventType}, fn=${filename}`);
             const imagePath = path.join(imageLocation, filename.toString());
             if (eventType === 'rename' && filename.toString() !== 'latest.jpeg') {
@@ -24,11 +34,10 @@ export class Receiver {
                         logger.debug('file not found');
                         return;
                     }
-                    logger.debug(`stat file= ${stat} ${stat.size}`);
+                    // logger.debug(`stat file= ${stat} ${stat.size}`);
                     fs.stat(latestimage, (err, stats) => {
-                        logger.debug(`image stat err=${err}, stat = ${stats}`);
+                        // logger.debug(`image stat err=${err}, stat = ${stats}`);
                         if (stat) {
-                            // logger.debug('unline latest');
                             fs.unlink(latestimage, (err) => {
                                 if (err) {
                                     logger.error('removing symlink failed');
@@ -38,7 +47,6 @@ export class Receiver {
                         logger.info(`new image ${filename}`);
                         fs.symlink(`${filename}`, latestimage, (err) => {
                             if (err) logger.error('symlink creation failed');
-                            // logger.info(`symlink message: ${err}`);
                         });
                     });
                 });
