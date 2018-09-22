@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  imagereceiver:
+    build: ./imagereceiver
+    command: nodemon server.js
+    volumes:
+      - ./imagereceiver:/app
+    ports:
+      - "5000:80"
+      - "5858:5858"
+    networks:
+      - back-tier
