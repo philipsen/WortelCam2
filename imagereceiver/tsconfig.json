@@ -58,5 +58,11 @@
 
     /* Advanced Options */
     "resolveJsonModule": true                 /* Include modules imported with '.json' extension */
-  }
+   
+  },
+  "exclude": [
+    "node_modules",
+    "images/**"
+  ],
+  "include": ["src/**/*.ts"]
 }

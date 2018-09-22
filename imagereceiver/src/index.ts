@@ -1,25 +1,24 @@
 import logger from "./util/logger";
 
-const serverclass = require("./server");
+const server = require("./server");
 const debug = require("debug")("express:server");
 const http = require("http");
 
 const httpPort = "8080";
-const app = serverclass.Server.bootstrap().app;
+const app = server.Server.bootstrap().app;
 app.set("port", httpPort);
-const server = http.createServer(app);
 
-server.listen(httpPort);
-
-server.on("error", onError);
-server.on("listening", onListening);
+const httpServer = http.createServer(app);
+httpServer.listen(httpPort);
+httpServer.on("error", onError);
+httpServer.on("listening", onListening);
 
 function onError(error: any) {
     if (error.syscall !== "listen") {
         throw error;
     }
 
-    const port = server.port();
+    const port = httpServer.port();
     const bind = typeof port === "string"
         ? "Pipe " + port
         : "Port " + port;
@@ -41,11 +40,16 @@ function onError(error: any) {
 
 function onListening() {
     console.log("listen..");
-    const addr = server.address();
+    const addr = httpServer.address();
     const bind = typeof addr === "string"
         ? "pipe " + addr
         : "port " + addr.port;
     logger.debug("Listening on " + bind);
 }
 
-export default server;
+//const receiver = require("./receiver");
+import { Receiver } from "./receiver";
+
+const receiver = Receiver.getInstance();
+
+export default httpServer;

@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "build-ts": "tsc -p .",
-    "watch-ts": "tsc -w",
+    "watch-ts": "tsc -watch",
     "watch-node": "nodemon",
     "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run watch-node\""
   },

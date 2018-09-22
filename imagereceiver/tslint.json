@@ -1,5 +1,7 @@
 {
     "rules": {
+        "prefer-template":true,
+        "no-console": true,
         "class-name": true,
         "comment-format": [
             true,
@@ -17,7 +19,7 @@
         "no-var-keyword": true,
         "quotemark": [
             true,
-            "double",
+            "single",
             "avoid-escape"
         ],
         "semicolon": [
