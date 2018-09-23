@@ -7,8 +7,7 @@ export class SocketService {
     private name: string;
     // private host: string = window.location.protocol + '//' + window.location.hostname + ':' + window.location.port;
     private host: string = window.location.protocol + '//' + window.location.hostname + ':' + '8080';
-    // socket: SocketIOClient.Socket;
-    socket: any;
+    socket: io.SocketIOClient.Socket;
 
     constructor() {
         console.log(`SocketService.ctor host:${this.host}`);

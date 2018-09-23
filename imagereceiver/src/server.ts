@@ -1,7 +1,7 @@
 
 import express from 'express';
 //  import * as morgan from "morgan";
-// import * as path from "path";
+import * as path from 'path';
 // import errorHandler = require("errorhandler");
 // import mongoose = require("mongoose");
 // import * as cors from "cors";
@@ -16,6 +16,7 @@ import socketIo from 'socket.io';
 import { PictureSocket } from './picture/picture-socket';
 import { FollowLatest } from './picture/follow-latest';
 import logger from './util/logger';
+import { IMAGE_DROP_LOCATION } from './util/secrets';
 
 export class Server {
 
@@ -47,6 +48,11 @@ export class Server {
         });
 
         // HouseApi.create(router);
+        router.get('/images/latest.jpeg', (req: express.Request, res: express.Response, next: express.NextFunction) => {
+            // logger.debug('send latest');
+            res.sendFile(path.join(`${IMAGE_DROP_LOCATION}`, 'latest.jpeg'));
+            // next();
+        });
 
         this.app.use('/api', router);
 
