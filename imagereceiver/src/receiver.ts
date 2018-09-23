@@ -3,13 +3,8 @@ import { IMAGE_DROP_LOCATION } from './util/secrets';
 import logger from './util/logger';
 import * as fs from 'fs';
 import * as path from 'path';
-import semaphore from 'semaphore';
-
-logger.info('load recevier');
-
 
 export class Receiver {
-    [x: string]: any;
     private static instance: Receiver;
     private sem: any;
 
@@ -40,34 +35,30 @@ export class Receiver {
                     return;
                 }
                 const imagePath = path.join(imageLocation, filename.toString());
-                if (filename.toString() !== 'latest.jpeg') {
-                    fs.stat(imagePath, (err, stat) => {
-                        if (err) {
-                            logger.debug('file not found');
-                            this.sem.leave();
-                            return;
-                        }
-
-                        // logger.debug(`stat file= ${stat} ${stat.size}`);
-                        fs.stat(latestimage, (err, stats) => {
-                            // logger.debug(`image stat err=${err}, stat = ${stats}`);
-                            if (stat) {
-                                fs.unlink(latestimage, (err) => {
-                                    if (err) {
-                                        logger.error('removing symlink failed');
-                                        // this.sem.leave();
-                                        return;
-                                    }
-                                });
-                            }
-                            logger.info(`new image ${filename}`);
-                            fs.symlink(`${filename}`, latestimage, (err) => {
-                                if (err) logger.error('symlink creation failed');
+                fs.stat(imagePath, (err, stat) => {
+                    if (err) {
+                        logger.debug('file not found');
+                        this.sem.leave();
+                        return;
+                    }
+                    fs.stat(latestimage, (err, stats) => {
+                        // logger.debug(`image stat err=${err}, stat = ${stats}`);
+                        if (stat) {
+                            fs.unlink(latestimage, (err) => {
+                                if (err) {
+                                    logger.error('removing symlink failed');
+                                    // this.sem.leave();
+                                    return;
+                                }
                             });
+                        }
+                        logger.info(`new image ${filename}`);
+                        fs.symlink(`${filename}`, latestimage, (err) => {
+                            if (err) logger.error('symlink creation failed');
                         });
-                        this.sem.leave(); return;
                     });
-                }
+                    this.sem.leave(); return;
+                });
                 // this.sem.leave();
             });
         });

@@ -1,18 +1,9 @@
 
 import express from 'express';
-//  import * as morgan from "morgan";
 import * as path from 'path';
-// import errorHandler = require("errorhandler");
-// import mongoose = require("mongoose");
-// import * as cors from "cors";
-// import dotenv from "dotenv";
-// import { HouseApi } from "./api/house";
-// import { runInNewContext } from "vm";
-
-// import { MONGODB_URI, SESSION_SECRET } from "./util/secrets";
-
 import * as http from 'http';
 import socketIo from 'socket.io';
+
 import { PictureSocket } from './picture/picture-socket';
 import { FollowLatest } from './picture/follow-latest';
 import logger from './util/logger';
@@ -34,9 +25,7 @@ export class Server {
         this.config();
         this.server = http.createServer(this.app);
         this.api();
-
         this.sockets();
-
         this.listen();
     }
 
@@ -49,9 +38,7 @@ export class Server {
 
         // HouseApi.create(router);
         router.get('/images/latest.jpeg', (req: express.Request, res: express.Response, next: express.NextFunction) => {
-            // logger.debug('send latest');
             res.sendFile(path.join(`${IMAGE_DROP_LOCATION}`, 'latest.jpeg'));
-            // next();
         });
 
         this.app.use('/api', router);
@@ -59,9 +46,7 @@ export class Server {
     }
 
     public config() {
-
         this.port = 8080;
-
         this.app.use(function (err: any, req: express.Request, res: express.Response, next: express.NextFunction) {
             err.status = 404;
             next(err);
@@ -70,30 +55,25 @@ export class Server {
         // this.app.use(errorHandler());
 
     }
-
-        // Configure sockets
         private sockets(): void {
             logger.debug('init sockets');
-            // Get socket.io handle
             this.io = socketIo(this.server);
-            // let roomSocket = new RoomSocket(this.io);
             const latestSocket = new PictureSocket(this.io);
             const follower = new FollowLatest(latestSocket);
         }
 
         // Start HTTP server listening
         private listen(): void {
-            // listen on provided ports
             this.server.listen(this.port);
 
             // add error handler
             this.server.on('error', (error: any) => {
-                logger.error(error);
+                logger.error(`Http Server Error: ${error}`);
             });
 
             // start listening on port
             this.server.on('listening', () => {
-                // console.log('==> Listening on port %s. Open up http://localhost:%s/ in your browser.', this.port, this.port);
+                logger.info(`Http Server listening on port ${this.port}`);
             });
         }
 }
