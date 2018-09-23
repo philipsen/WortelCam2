@@ -16,12 +16,12 @@ export class FollowLatest {
     private init(socket: PictureSocket): void {
         const latestimage = path.join(`${IMAGE_DROP_LOCATION}`, 'latest.jpeg');
         logger.debug(`FollowLatest init tracker: ${latestimage}`);
-
-        fs.readlink(latestimage, (err, realFile) => {
-            if (err) {
-                logger.error(err);
-                return;
-            }
+        const realFile = latestimage;
+        // fs.readlink(latestimage, (err, realFile) => {
+        //     if (err) {
+        //         logger.error(err);
+        //         return;
+        //     }
              // tslint:disable-next-line:prefer-template
              logger.debug('FollowLatest real file to watch = ' + realFile);
              fs.watchFile(realFile, function (curr, prev) {
@@ -29,6 +29,6 @@ export class FollowLatest {
                  logger.debug('FollowLatest pic changed ' + curr.ctime);
                 socket.nsp.emit('update', curr.ctime);
             });
-        });
+        // });
     }
 }

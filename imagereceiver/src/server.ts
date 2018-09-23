@@ -67,6 +67,7 @@ export class Server {
 
         // Configure sockets
         private sockets(): void {
+            logger.debug('init sockets');
             // Get socket.io handle
             this.io = socketIo(this.server);
             // let roomSocket = new RoomSocket(this.io);
