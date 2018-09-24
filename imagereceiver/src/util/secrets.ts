@@ -17,3 +17,9 @@ if (!IMAGE_DROP_LOCATION) {
     logger.error('No image drop location defined');
     process.exit(1);
 }
+
+export const IMAGE_FETCH_LOCATION = process.env['IMAGE_FETCH_LOCATION'];
+if (!IMAGE_FETCH_LOCATION) {
+    logger.error('No image FETCH location defined');
+    process.exit(1);
+}
