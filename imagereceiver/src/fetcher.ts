@@ -1,6 +1,6 @@
 import logger from './util/logger';
 import * as cron from 'cron';
-import * as fs from 'fs';
+import * as fs from 'fs-extra';
 import * as http from 'http';
 import * as path from 'path';
 
@@ -13,20 +13,23 @@ export class Fetcher {
     private constructor() {
         logger.debug('Fetcher.ctor');
         this.cronJob = new cron.CronJob('*/10 * * * * *', () => {
-            logger.debug('job triggered');
             this.fetchImage();
         }, undefined, true, 'Europe/Amsterdam');
     }
 
     fetchImage(): void {
-        const file = fs.createWriteStream(path.join(`${IMAGE_FETCH_LOCATION}`, 'latest.jpg'));
+        const latestFile = path.join(`${IMAGE_FETCH_LOCATION}`, 'latest.jpg');
+        const file = fs.createWriteStream(latestFile);
         http.get('http://192.168.1.152:88/cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&usr=admin&pwd=sevenum42', (res) => {
            res.pipe(file);
         }).on('error', (err) => {
-            logger.error(`HTTP get error: ${err}`);
+            logger.error(`HTTP get error: ${err}`); return;
         });
         file.on('close', () => {
-            logger.debug('file closed');
+            const now = new Date().toISOString();
+            const fn = path.join(`${IMAGE_FETCH_LOCATION}`, now.substr(0, 10), now.substr(0, 19));
+            logger.debug(`fn = ${fn}`);
+            fs.copy(latestFile, fn).catch(err => logger.error(err));
         });
     }
 
