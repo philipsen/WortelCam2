@@ -13,7 +13,7 @@ export class PictureComponent implements OnInit {
     latestPicture: IPicture;
     latestTimestamp: string;
 
-    baseUrl = 'http://localhost:8080/api/images/latest.jpeg';
+    baseUrl = 'http://localhost:8080/api/images/latest.jpg';
     url: string = this.baseUrl;
     serialnr = 0;
 
@@ -30,6 +30,7 @@ export class PictureComponent implements OnInit {
             this.latestTimestamp = timestamp;
             this.serialnr = this.serialnr + 1;
             this.url = this.baseUrl + '?' + this.serialnr;
+            console.log('baseUrl: ', this.url);
         });
     }
 

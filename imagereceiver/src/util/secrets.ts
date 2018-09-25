@@ -23,3 +23,6 @@ if (!IMAGE_FETCH_LOCATION) {
     logger.error('No image FETCH location defined');
     process.exit(1);
 }
+export const IMAGE_URL = process.env['IMAGE_URL'];
+
+

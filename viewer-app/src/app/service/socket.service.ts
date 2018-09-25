@@ -15,12 +15,12 @@ export class SocketService {
 
     // Get items observable
     get(name: string): Observable<any> {
-        console.log('get ' + name);
+        console.log('SocketService::get ' + name);
         this.name = name;
         const socketUrl = this.host + '/' + this.name;
         console.log('url = ' + socketUrl);
         this.socket = io.connect(socketUrl);
-        this.socket.on('connect', () => this.connect());
+        // this.socket.on('connect', () => this.connect());
         this.socket.on('disconnect', () => this.disconnect());
         this.socket.on('error', (error: string) => {
             console.log(`ERROR: "${error}" (${socketUrl})`);
