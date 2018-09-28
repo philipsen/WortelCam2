@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LatestPictureService } from '../service/latest-picture.service';
 import { IPicture } from '../models/i-picture';
+import { observable, timer, Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-picture',
@@ -13,12 +14,25 @@ export class PictureComponent implements OnInit {
     latestPicture: IPicture;
     latestTimestamp: string;
 
-    baseUrl = 'http://localhost:8080/api/images/latest.jpg';
+    baseUrl = '/api/images/latest.jpg';
     url: string = this.baseUrl;
     serialnr = 0;
+    secTimer: Subscription;
+    timeStamp = 0;
+    lastTimeStamp = 0;
+    leapTime = 0;
 
     constructor() {
         console.log('PictureComponent.ctor');
+        this.secTimer = timer(1000, 1000).subscribe((tt) => {
+            console.log('t = ', tt);
+            // if (tt % 10 === 0) {
+            //     console.log('try reset');
+            //     this.lastTimeStamp = this.timeStamp;
+            // }
+            this.timeStamp = tt;
+            this.leapTime = tt - this.lastTimeStamp;
+        });
     }
 
     ngOnInit() {
@@ -30,7 +44,8 @@ export class PictureComponent implements OnInit {
             this.latestTimestamp = timestamp;
             this.serialnr = this.serialnr + 1;
             this.url = this.baseUrl + '?' + this.serialnr;
-            console.log('baseUrl: ', this.url);
+            console.log('baseUrl2: ', this.url);
+            this.lastTimeStamp = this.timeStamp;
         });
     }
 

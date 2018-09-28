@@ -1,7 +1,7 @@
 import logger from './util/logger';
 import * as cron from 'cron';
 import * as fs from 'fs-extra';
-import * as http from 'http';
+import * as http from 'https';
 import * as path from 'path';
 
 import { IMAGE_FETCH_LOCATION, IMAGE_URL } from './util/secrets';
@@ -29,7 +29,7 @@ export class Fetcher {
         file.on('close', () => {
             FollowLatest.getInstance().notify();
             const now = new Date().toISOString();
-            const fn = path.join(`${IMAGE_FETCH_LOCATION}`, now.substr(0, 10), now.substr(0, 19));
+            const fn = path.join(`${IMAGE_FETCH_LOCATION}`, now.substr(0, 10), `${now.substr(0, 19)}.jpg`);
             logger.debug(`fn = ${fn}`);
             fs.copy(latestFile, fn).catch(err => logger.error(err));
         });

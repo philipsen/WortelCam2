@@ -1,5 +1,7 @@
 
-<h1>Picture  {{ latestTimestamp | date:'y MMM dd HH:mm:s'}}</h1>
+<h1>Picture  {{ latestTimestamp | date:'y MMM dd HH:mm:s'}} {{ timeStamp - lastTimestamp }}</h1>
+{{ leapTime }}
+
 <div>
     <img width="100%" [src]="url">
 </div>

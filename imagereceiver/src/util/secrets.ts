@@ -12,17 +12,10 @@ if (fs.existsSync('.env')) {
 export const ENVIRONMENT = process.env.NODE_ENV;
 const prod = ENVIRONMENT === 'production'; // Anything else is treated as 'dev'
 
-export const IMAGE_DROP_LOCATION = process.env['IMAGE_DROP_LOCATION'];
-if (!IMAGE_DROP_LOCATION) {
-    logger.error('No image drop location defined');
-    process.exit(1);
-}
-
 export const IMAGE_FETCH_LOCATION = process.env['IMAGE_FETCH_LOCATION'];
 if (!IMAGE_FETCH_LOCATION) {
     logger.error('No image FETCH location defined');
     process.exit(1);
 }
 export const IMAGE_URL = process.env['IMAGE_URL'];
-
 

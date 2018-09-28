@@ -44,9 +44,9 @@ export class Server {
 
         // HouseApi.create(router);
         router.get('/images/latest.jpg', (req: express.Request, res: express.Response, next: express.NextFunction) => {
-            logger.debug('jpg');
             res.sendFile(path.join(`${IMAGE_FETCH_LOCATION}`, 'latest.jpg'));
         });
+
         router.get('/images/latest.jpeg', (req: express.Request, res: express.Response, next: express.NextFunction) => {
             logger.debug('jpeg');
             res.sendFile(path.join(`${IMAGE_FETCH_LOCATION}`, 'latest.jpg'));
