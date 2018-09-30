@@ -25,11 +25,6 @@ export class PictureComponent implements OnInit {
     constructor() {
         console.log('PictureComponent.ctor');
         this.secTimer = timer(1000, 1000).subscribe((tt) => {
-            console.log('t = ', tt);
-            // if (tt % 10 === 0) {
-            //     console.log('try reset');
-            //     this.lastTimeStamp = this.timeStamp;
-            // }
             this.timeStamp = tt;
             this.leapTime = tt - this.lastTimeStamp;
         });

@@ -17,7 +17,7 @@ export class SocketService {
     get(name: string): Observable<any> {
         console.log('SocketService::get ' + name);
         this.name = name;
-        const socketUrl = this.host + '/' + this.name;
+        const socketUrl = '/' + this.name;
         console.log('url = ' + socketUrl);
         this.socket = io.connect(socketUrl);
         // this.socket.on('connect', () => this.connect());
